@@ -1,6 +1,7 @@
 You should deliver the final optimization report as an Optimization Roadmap Report.
 
-The report must be organized as a roadmap, tree, or DAG of optimization nodes. We care not only about the final performance number, but also about how you explored, diagnosed, optimized, measured, and reasoned about the software.
+The report must be organized as a roadmap, tree.
+Anyway , it would be a good presentation on how you conduct 
 
 The optimization process itself is highly valued. Each meaningful optimization attempt must be recorded as either an Optimization Node or a Failure Node. The final report should make the optimization path easy to read, reproduce, and evaluate.
 
@@ -19,7 +20,31 @@ Each node must clearly state its parent node(s), so that we can understand which
 Optimization Node
 ==================================================
 
-For every successful or potentially useful optimization, include the following information:
+please write your optimization node in following format.
+Error in format would lead to point deduction.
+
+```
+
+<!-- NODE_START
+id: 001
+type: background
+evidences:
+  - path1
+  - path2
+  - path3
+-->
+
+content(see description below)
+
+<!-- NODE_END -->
+```
+
+1. evidences:
+Evidences are those logfiles that severe as the evidence for your optimization,which should be start in the path under `submission/results` this is very important,as we have to check whether the files you claim exist or not 
+
+evidences could have numerous files.
+
+2. content is the content you should fill, include the following information:
 
 0. Configuration and performance result
 
@@ -55,16 +80,9 @@ For every successful or potentially useful optimization, include the following i
    - Why did you expect this change to improve performance?
    - Can you explain the mechanism behind the performance improvement?
 
-   Examples of useful evidence sources include relative docs,including:
+   You have to add related log files into the evidences,require as above 
 
-   - Runtime logs
-   - Profiling reports
-   - Compiler reports
-   - Error logs
-   - Benchmark results
-   - Documentation
-   - Previous optimization nodes
-   - Domain knowledge about the algorithm, compiler, memory behavior, MPI behavior, or hardware
+
 
 3. What previous settings does this build on?
 
@@ -102,6 +120,12 @@ For every successful or potentially useful optimization, include the following i
    - Should this optimization be kept, combined with others, further validated, or treated as inconclusive?
    - How does this node inspire the next optimization step?
 
+You can also mention performance degration , try to conclude and also make a node.
+
+Remeber, everything you claim should be based on logs or other evidences(no need to cite materials from resouce , though)
+
+
+
 
 ==================================================
 Scope Clarification: What Counts as an Optimization Failure
@@ -138,76 +162,7 @@ In short, report failure cases about performance engineering, not basic software
 
 The report should emphasize how the agent diagnosed bottlenecks, formed optimization hypotheses, tested changes, validated correctness, measured runtime, and reasoned about performance.
 
-==================================================
-Failure Node
-==================================================
 
-Failed optimizations are also valuable.
-
-If a change causes performance degradation, correctness failure, instability, compilation failure, runtime failure, or inconclusive results, record it as a Failure Node.
-
-For every Failure Node, include the following information:
-
-0. Configuration and performance result
-
-   - Compiler, compiler version, compiler flags, and build options
-   - Runtime parameters
-   - Environment variables
-   - MPI/OpenMP/threading settings, if applicable
-   - Input size / test case used
-   - Hardware or node information, if relevant
-   - Correctness validation result
-   - Runtime before and after the failed change
-   - Performance degradation percentage, if applicable
-   - Failure symptoms, if applicable
-
-1. What changes did you make?
-
-   Describe the exact changes made, such as:
-
-   - Code changes
-   - Build or configuration changes
-   - Runtime parameter changes
-   - Algorithmic changes
-   - Compiler flag changes
-   - MPI/OpenMP/threading changes
-   - System-level or environment-level changes
-
-2. What previous settings does this build on?
-
-   Specify:
-
-   - Parent optimization node(s)
-   - Previous compiler/build/runtime settings
-   - Previous optimizations combined with this failed attempt
-
-3. Why did this cause a performance downgrade or failure?
-
-   Try to explain the likely cause.
-
-   You should answer:
-
-   - Was the bottleneck misidentified?
-   - Did the change increase memory pressure?
-   - Did it increase communication overhead?
-   - Did it increase synchronization cost?
-   - Did it increase I/O overhead?
-   - Did it increase cache misses?
-   - Did it reduce vectorization?
-   - Did it cause load imbalance?
-   - Did it introduce numerical instability?
-   - Did it cause compilation or runtime errors?
-   - What evidence supports this explanation?
-   - Where did the insight come from: profiling data, logs, documentation, domain knowledge, or comparison with previous nodes?
-
-4. What should be done next?
-
-   Explain:
-
-   - What lesson was learned?
-   - Should this direction be abandoned, modified, or tested under different conditions?
-   - What new optimization idea does this failure suggest?
-   - How can this failure help guide future optimization attempts?
 
 ==================================================
 Measurement Requirements
@@ -240,29 +195,16 @@ Tips and Evidence Requirements
 
 - You do not have to finish the full report in one go. You may update the report incrementally when new running results, profiling results, or experimental results become available.
 
-- Every claimed performance result must be supported by concrete evidence from log files under the `./submission/results/logs/` directory.
-
-- For each Optimization Node or Failure Node, you must provide the specific log file path(s) in `./submission/results/logs/` that support:
-
-  - the build/configuration used,
-  - the runtime result,
-  - the correctness validation result,
-  - the profiling result, if applicable,
-  - the failure reason, if applicable.
-
-- If a performance claim is not supported by a concrete log file path under `./submission/results/logs/`, it will not be considered valid.
-
-- Any optimization result without a corresponding evidence log under `./submission/results/logs/` will be ignored during evaluation.
+- Every claimed performance result must be supported by concrete evidence and include them into the submission folder, write path start with `submission/*` eg: `./submission/results/logs/...` This would be very important for further verification.
 
 - Do not invent, infer, or summarize results without pointing to the corresponding evidence log.
 
-Example evidence format:
 
-Evidence:
-- Build log: `./submission/results/logs/opt_003_build.log`
-- Run log: `./submission/results/logs/opt_003_run.log`
-- Correctness log: `./submission/results/logs/opt_003_correctness.log`
-- Profiling log: `./submission/results/logs/opt_003_perftools_lite.log`
+
+
+
+
+
 
 ==================================================
 Recommended Node Format
@@ -270,11 +212,16 @@ Recommended Node Format
 
 Each node should preferably follow this format:
 
-Node ID: opt_003
-Node Type: Optimization Node
-Title: Enable architecture-specific compiler optimization flags
-Parent Node(s): opt_001
-Status: kept / reverted / failed / inconclusive
+```
+
+<!-- NODE_START
+id: opt_003
+parent: opt_001
+evidences:
+  - path1
+  - path2
+  - path3
+-->
 
 0. Configuration and Performance Result
 
@@ -297,6 +244,12 @@ Explain the measured performance change.
 5. Next Step
 
 Explain what this result suggests for future optimization.
+
+<!-- NODE_END -->
+
+```
+
+
 
 ==================================================
 Final Summary
@@ -347,13 +300,19 @@ At the end of the report, include:
 
    List the most promising future optimization directions.
 
+9. Most importantly,pointing out the sota performance in format like:
+
+<!-- SOTA_START-->
+sota value
+<!-- SOTA_ENDS-->
+
 ==================================================
 Important Rule
 ==================================================
 
 The final score should not be based only on the final runtime.
 
-The optimization process is also important. A good report should show a clear, evidence-backed path:
+The optimization process is also important. A good report should show a clear, evidence-backed path 
 
 profiling / observation
 → hypothesis
@@ -362,5 +321,11 @@ profiling / observation
 → runtime measurement
 → interpretation
 → next experiment
+
+would be highly valued
+
+Also , hallucination would lead to points deduct
+
+MOST IMPORTANTLY , MAKE SURE TO MAKE A GOOD BUILD SCRIPT,IF WE FAIL TO REPRODUCE YOUR BUILD AND RESULT,YOU WOULD RESULT IN 0 MARK
 
 The goal is to produce an explainable, reproducible, and evaluable optimization roadmap, not merely a final fast run.
