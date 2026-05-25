@@ -1,5 +1,18 @@
 <!-- NODE_START
-id: opt_003
+id: opt_001
+parent: NA
+evidences:
+  - path1
+  - path2
+  - path3
+-->
+
+your node content here
+
+<!-- NODE_END -->
+
+<!-- NODE_START
+id: opt_002
 parent: opt_001
 evidences:
   - path1
@@ -10,6 +23,8 @@ evidences:
 your node content here
 
 <!-- NODE_END -->
+
+...
 
 <!-- SUMMARY_START-->
 Your final summary here
